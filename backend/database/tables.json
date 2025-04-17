@@ -1,0 +1,68 @@
+{
+    "operation": "create",
+    "database": "score_sync",
+    "host": "127.0.0.1",
+    "user": "postgres",
+    "password": "",
+    "port": 5432,
+    "tables": {
+        "users": {
+            "id": "SERIAL PRIMARY KEY",
+            "first_name": "TEXT",
+            "last_name": "TEXT",
+            "preffered_name": "TEXT",
+            "email": "TEXT",
+            "phone_num": "TEXT",
+            "user_name": "TEXT",
+            "user_class": "TEXT",
+            "birthday": "TEXT",
+            "teams": "TEXT[]"
+        },
+        "teams": {
+            "id": "SERIAL PRIMARY KEY",
+            "team_name": "TEXT",
+            "team_abbr": "TEXT",
+            "team_id": "INTEGER",
+            "roster_names": "TEXT[]",
+            "sport": "TEXT",
+            "level": "TEXT",
+            "date_of_creation": "TIMESTAMP",
+            "semester": "TEXT",
+            "year": "INTEGER",
+            "record": "TEXT",
+            "wins": "INTEGER",
+            "losses": "INTEGER",
+            "ties": "INTEGER",
+            "game_ids": "INTEGER[]"
+        },
+        "games": {
+           "game_id": "SERIAL PRIMARY KEY", 
+            "home_team": "TEXT",
+            "home_team_id": "INTEGER",
+            "away_team": "TEXT",
+            "away_team_id": "INTEGER",
+            "home_points_scored": "INTEGER",
+            "away_points_scored": "INTEGER",
+            "commence_time": "TIMESTAMP",
+            "sport": "TEXT",
+            "location": "TEXT",
+            "is_playoff": "BOOLEAN",
+            "winning_team": "TEXT"
+        },
+        "football_stats": {
+            "id": "SERIAL PRIMARY KEY",
+            "pass_yds": "INTEGER",
+            "pass_tds": "INTEGER",
+            "rush_yds": "INTEGER",
+            "rush_tds": "INTEGER",
+            "rec_yds": "INTEGER",
+            "rec_tds": "INTEGER",
+            "receptions": "INTEGER",
+            "interceptions": "INTEGER",
+            "deflections": "INTEGER",
+            "sacks": "FLOAT",
+            "jersey_num": "INTEGER",
+            "player_id": "INTEGER"
+        }
+    }
+}
