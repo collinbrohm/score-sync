@@ -1,0 +1,187 @@
+.landing-page {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .div {
+    background-color: #ffffff;
+    height: 828px;
+    overflow: hidden;
+    position: relative;
+    width: 1280px;
+  }
+  
+  .overlap-group {
+    height: 600px;
+    left: 123px;
+    position: absolute;
+    top: 124px;
+    width: 1301px;
+  }
+  
+  .cover {
+    /*background-image: url('./subtract.svg'); */ /* adjust path if needed */
+    background-size: 100% 100%;
+    height: 600px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 1041px;
+  }
+  
+  .sign-up-today,
+  .or,
+  .login {
+    color: #000000;
+    font-family: 'Staatliches-Regular', Helvetica, sans-serif;
+    font-size: 31.1px;
+    font-weight: 400;
+    letter-spacing: 3.11px;
+    line-height: 32.6px;
+    position: absolute;
+    width: 214px;
+  }
+  
+  .login {
+    top: 161px;
+    left: 707px;
+    white-space: nowrap;
+    width: 127px;
+  }
+  
+  .or {
+    top: 172px;
+    left: 707px;
+  }
+  
+  .sign-up-today {
+    top: 204px;
+    left: 707px;
+  }
+  
+  .track-players-stats {
+    color: #000000;
+    font-family: 'Staatliches-Regular', Helvetica, sans-serif;
+    font-size: 31.1px;
+    font-weight: 400;
+    letter-spacing: 3.11px;
+    line-height: 32.6px;
+    position: absolute;
+    top: 357px;
+    left: 83px;
+    width: 316px;
+  }
+  
+  .sync,
+  .score {
+    color: #000000;
+    font-family: 'Staatliches-Regular', Helvetica, sans-serif;
+    font-size: 222.2px;
+    font-weight: 400;
+    letter-spacing: -2.22px;
+    line-height: 281.5px;
+    position: absolute;
+    white-space: nowrap;
+    width: 813px;
+  }
+  
+  .sync {
+    top: 240px;
+    left: 489px;
+  }
+  
+  .score {
+    top: 41px;
+    left: 82px;
+    -webkit-text-stroke: 0.74px #000000;
+  }
+  
+  .navbar {
+    position: absolute;
+    top: 30px;
+    left: 28px;
+    width: 1252px;
+    padding: 7.41px 29.63px;
+    background-color: #ffffff;
+    border: 0.74px solid #e8e8e8;
+    border-radius: 740px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-family: 'Staatliches-Regular', Helvetica, sans-serif;
+    font-size: 29.6px;
+    color: #030303;
+    width: 196.3px;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 44.44px;
+    margin-left: -61.41px;
+    align-items: center;
+  }
+  
+  .text-wrapper-4 {
+    font-family: 'Poppins-Regular', Helvetica, sans-serif;
+    font-size: 11.9px;
+    color: #030303;
+  }
+  
+  .services {
+    display: flex;
+    align-items: center;
+    gap: 3.7px;
+  }
+  
+  .vector {
+    height: 3.7px;
+    width: 6.67px;
+  }
+  
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 11.11px;
+    height: 37.78px;
+    justify-content: flex-end;
+  }
+  
+  .button-fill-rounded {
+    background-color: #030303 !important;
+    border-radius: unset !important;
+    gap: 7.41px !important;
+    padding: 7.41px 14.81px !important;
+    overflow: unset !important;
+  }
+  
+  .property-1-default {
+    font-family: 'Raleway-SemiBold', Helvetica !important;
+    font-size: 11.9px !important;
+    font-weight: 600 !important;
+    line-height: 17.8px !important;
+    margin-top: -0.74px !important;
+  }
+  
+  .button-outline-sm-instance {
+    border: 1.48px solid #030303 !important;
+    padding: 7.41px 14.81px !important;
+    gap: 7.41px !important;
+  }
+  
+  .design-component-instance-node {
+    font-family: 'Raleway-SemiBold', Helvetica !important;
+    font-size: 11.9px !important;
+    font-weight: 600 !important;
+    line-height: 17.8px !important;
+    color: #030303 !important;
+    margin-top: -1.48px !important;
+  }
+
+ 
+  
