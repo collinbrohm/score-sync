@@ -9,7 +9,6 @@ class User:
     """Model containing user data."""
     first_name: str
     last_name: str
-    username: str
     email: str
     username: str
     user_class: str # Freshman, sophmore, ect

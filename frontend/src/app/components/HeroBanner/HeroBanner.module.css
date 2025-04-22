@@ -1,0 +1,84 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  background-color: #f4f4f4;
+}
+
+.cover {
+  position: absolute;
+  width: 1040.74px;
+  height: 600px;
+  left: 195px;
+  top: 70px;
+  background-image: url('/cover.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 0;
+}
+
+.score {
+  position: absolute;
+  top: 130px;
+  left: calc(50% - 740px / 2 - 28px);
+  font-family: 'Staatliches', sans-serif;
+  font-size: 230px;
+  letter-spacing: -0.01em;
+  color: #000;
+  line-height: 281px;
+  margin: 0;
+}
+
+.sync {
+  position: absolute;
+  top: 330px;
+  left: calc(50% - 740px / 2 + 378px);
+  font-family: 'Staatliches', sans-serif;
+  font-size: 230px;
+  letter-spacing: -0.01em;
+  color: #000;
+  line-height: 281px;
+  margin: 0;
+}
+
+.subtitle {
+  position: absolute;
+  top: 440px;
+  left: 330px;
+  font-family: 'Staatliches', sans-serif;
+  font-size: 30px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #000;
+  line-height: 33px;
+}
+
+.auth {
+  position: absolute;
+  top: 210px;
+  left: 950px; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+
+.login, .signup {
+  
+  left: 830px;
+  font-family: 'Staatliches', sans-serif;
+  font-size: 30px;
+  text-decoration: none;
+  color: black;
+  text-transform: uppercase;
+  line-height: 33px;
+}
+
+.or {
+  font-family: 'Staatliches', sans-serif;
+  font-size: 30px;
+  line-height: 33px;
+  color: black;
+}

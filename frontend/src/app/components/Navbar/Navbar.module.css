@@ -1,0 +1,42 @@
+.navbar {
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 1.75rem;
+    font-weight: bold;
+  }
+  
+  .navLinks {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .authButtons {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  .signIn {
+    border: 1px solid black;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+  
+  .register {
+    background: black;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+  }
+  

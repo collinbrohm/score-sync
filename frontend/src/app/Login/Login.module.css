@@ -1,0 +1,121 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 4rem;
+    background: white;
+  }
+  
+  .formBox {
+    width: 400px;
+    margin-left: 3rem;
+  }
+  
+  .heading {
+    font-family: 'Staatliches', sans-serif;
+    font-size: 2.5rem;
+    color: #000;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .subheading {
+    text-align: center;
+    color: #636364;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  
+  .label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #181818;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+    box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .options {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    color: #181818;
+    margin-bottom: 1.5rem;
+  }
+  
+  .remember {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  
+  .forgot {
+    text-decoration: none;
+    color: #181818;
+  }
+  
+  .signInButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #FF6A3B;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    border: none;
+    border-radius: 9px;
+    box-shadow: 0px 3px 7px rgba(233, 68, 75, 0.25);
+    cursor: pointer;
+  }
+  
+  .signupText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    color: #595959;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .rightSide {
+    flex: 1;
+    position: relative;
+    height: 100%;
+  }
+  
+  .sportsImages {
+    position: relative;
+    width: 100%;
+    height: 600px;
+  }
+  
+  .sportsImages img {
+    position: absolute;
+  }
+  
+  .rugby {
+    top: 0;
+    left: 60%;
+    
+  }
+  
+  .frisbee {
+    top: 200px;
+    left: 20%;
+  }
+  
+  .basketball {
+    top: 400px;
+    left: 60%;
+  }
+  

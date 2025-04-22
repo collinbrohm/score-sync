@@ -68,6 +68,7 @@ class Player(Resource):
         
         player = db.transform_players(player_data)
         db.persist_players(player)
+        
 class Game(Resource):
     def post():
         pass
