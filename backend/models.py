@@ -9,15 +9,21 @@ class User:
     """Model containing user data."""
     first_name: str
     last_name: str
-    preferred_name: str
+    username: str
     email: str
-    phone_num: str
-    user_name: str
+    username: str
     user_class: str # Freshman, sophmore, ect
     birthday: str
     teams: Optional[list[str]] = None
     
-# NOTE: Might need to add more data classes for the combined stats?
+@dataclass(frozen=True)
+class Player:
+    first_name: str
+    last_name: str
+    email: str
+    team_name: str
+    jersey_num: int
+
 @dataclass(frozen=True)
 class FootballDTO:
     """Model for tracking football stats."""

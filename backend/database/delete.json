@@ -1,9 +1,9 @@
 {
 	"operation": "delete",
-  "database": "score-sync",
+    "database": "score-sync",
 	"host": "127.0.0.1",
 	"user": "postgres",
 	"password": "",
 	"port": 5432,
-	"tables": ["users", "teams", "games", "football_stats"]
+	"tables": ["users", "teams", "games", "football_stats", "players"]
 }
