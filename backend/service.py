@@ -26,6 +26,22 @@ class User(Resource):
         """Function do display user data."""
         pass
 
+class Player(Resource):
+    def post():
+        player_data = request.json
+        db = DatabaseClient()
+
+        if not player_data:
+            logger.error('No user data provided.')
+            return []
+        
+        user = db.transform_players(player_data)
+        db.persist_players(user)
+
+    def get():
+        """Function do display user data."""
+        pass
+
 class Team(Resource):
     def post():
         team_data = request.json
@@ -65,6 +81,7 @@ def main():
     api.add_resource(User, '/user')
     api.add_resource(Team, '/team')
     api.add_resource(Game, '/game')
+    api.add_resource(Player, '/player')
     app.run(host='127.0.0.1')
 
 if __name__ == '__main__':

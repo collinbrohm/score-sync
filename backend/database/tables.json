@@ -17,6 +17,13 @@
             "birthday": "TEXT",
             "teams": "TEXT[]"
         },
+        "players": {
+            "id": "SERIAL PRIMARY KEY",
+            "first_name": "TEXT",
+            "last_name": "TEXT",
+            "team_name": "TEXT",
+            "jersey_num": "INTEGER"
+        },
         "teams": {
             "id": "SERIAL PRIMARY KEY",
             "team_name": "TEXT",
