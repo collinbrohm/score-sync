@@ -1,0 +1,78 @@
+.container {
+  background: #fbfbfb;
+  min-height: 100vh;
+  padding: 2rem 4rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.banner {
+  position: relative;
+  background-image: url('/cover.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 330px;
+  width: 100%;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bannerText {
+  text-align: center;
+  font-family: 'Staatliches', sans-serif;
+  font-size: 3rem;
+  color: black;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  color: #848484;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+.teamCard, .playerCard {
+  min-width: 200px;
+  background: white;
+  border-radius: 20px;
+  padding: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.teamCard img, .playerCard img {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.teamName {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.sportName {
+  font-size: 0.9rem;
+  color: #848484;
+}
+
+.playerName {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.playerDesc {
+  font-size: 0.8rem;
+  color: #848484;
+  margin-top: 0.2rem;
+}

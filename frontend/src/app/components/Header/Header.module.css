@@ -1,0 +1,47 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    width: 100%;
+  }
+  
+  .searchBox {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1.5px solid #848484;
+    border-radius: 30px;
+    padding: 0.5rem 1rem;
+    width: 350px;
+  }
+  
+  .searchBox input {
+    flex: 1;
+    border: none;
+    outline: none;
+    margin: 0 0.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #848484;
+    background: transparent;
+  }
+  
+  .icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .username {
+    font-family: 'Staatliches', sans-serif;
+    font-size: 1.1rem;
+    color: black;
+  }
+  
