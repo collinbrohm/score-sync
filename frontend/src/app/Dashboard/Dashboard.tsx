@@ -1,48 +1,104 @@
 'use client';
 
-//import Header from './components/Header/Header.tsx;'
-import styles from './Dashboard.module.css';
+import { useState } from 'react';
+import Sidebar from '../components/Sidebar/Sidebar';
+import Header from '../components/Header/Header';
 import Image from 'next/image';
+import styles from './Dashboard.module.css';
+
+// Helper to get sport image path
+const getSportImage = (sport: string) => {
+  switch (sport.toLowerCase()) {
+    case 'football':
+      return '/football.png';
+    case 'basketball':
+      return '/basketball.png';
+    case 'soccer':
+      return '/soccer.png';
+    case 'baseball':
+      return '/baseball.png';
+    case 'volleyball':
+      return '/volleyball.png';
+    default:
+      return '/default_team.png'; // fallback in case sport name doesn't match
+  }
+};
 
 export default function Dashboard() {
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+
+  // This will be replaced later with real backend data
+  const username = 'USERNAME HERE'; // placeholder for now
+
+  // Placeholder teams
+  const teams = [
+    { name: 'Team 1', sport: 'Basketball' },
+    { name: 'Team 2', sport: 'Football' },
+    { name: 'Team 3', sport: 'Soccer' },
+    { name: 'Team 4', sport: 'Baseball' },
+    { name: 'Team 5', sport: 'Volleyball' },
+  ];
+
+  // Placeholder players
+  const players = [
+    { name: 'Lionel Messi', description: '#10 GOAT • Description goes here', image: '/lionel_messi.jpg' },
+    { name: 'LeBron James', description: '6\'9" • Description goes here', image: '/lebron_james.jpg' },
+    { name: 'Kirby Joseph', description: 'DB • Description goes here', image: '/kirby_joseph.jpg' },
+    { name: 'Ronald Acuña Jr.', description: 'OF • Description goes here', image: '/ronald_acuna.jpg' },
+  ];
+
+  const handleToggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className={styles.dashboardContainer}>
-     {/* <Header /> */}
+      <Sidebar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
 
-      {/* Welcome Banner */}
-      <div className={styles.welcomeBanner}>
-        <div className={styles.coverImage}></div>
-        <div className={styles.bannerText}>
-          <h1>WELCOME BACK</h1>
-          <h1>USERNAME HERE</h1>
+      <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ''}`}>
+        <Header />
+
+        {/* Banner Section */}
+        <div className={styles.banner}>
+          <div className={styles.bannerText}>
+            <div>WELCOME BACK</div>
+            <div>{username}</div> {/* Replace this with actual username from backend */}
+          </div>
         </div>
-      </div>
 
-      {/* My Teams */}
-      <h2 className={styles.sectionTitle}>My Teams</h2>
-      <div className={styles.teamRow}>
-        {[1, 2, 3, 4].map((team) => (
-          <div key={team} className={styles.teamCard}>
-            <Image src="/team.png" alt={`Team ${team}`} width={44} height={44} />
-            <h3>Team {team}</h3>
-            <p>{['Basketball', 'Football', 'Soccer', 'Baseball'][team - 1]}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Players */}
-      <h2 className={styles.sectionTitle}>Players</h2>
-      <div className={styles.playerRow}>
-        {/* Placeholder images for now */}
-        {["messi.png", "lebron.png", "kirby.png", "ronald.png"].map((img, i) => (
-          <div key={i} className={styles.playerCard}>
-            <Image src={`/${img}`} alt="Player" width={200} height={120} className={styles.playerImg} />
-            <div className={styles.playerInfo}>
-              <h4>{['Lionel Messi', 'LeBron James', 'Kirby Joseph', 'Ronald Acuña Jr.'][i]}</h4>
-              <p>Player description goes here</p>
+        {/* My Teams Section */}
+        <h2 className={styles.sectionTitle}>My Teams</h2>
+        <div className={styles.scrollContainer}>
+          {teams.map((team, index) => (
+            <div key={index} className={styles.teamCard}>
+              <Image
+                src={getSportImage(team.sport)}
+                alt={team.sport}
+                width={44}
+                height={44}
+              />
+              <div className={styles.teamName}>{team.name}</div>
+              <div className={styles.sportName}>{team.sport}</div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Players Section */}
+        <h2 className={styles.sectionTitle}>Players</h2>
+        <div className={styles.scrollContainer}>
+          {players.map((player, index) => (
+            <div key={index} className={styles.playerCard}>
+              <Image
+                src={player.image}
+                alt={player.name}
+                width={200}
+                height={120}
+              />
+              <div className={styles.playerName}>{player.name}</div>
+              <div className={styles.playerDesc}>{player.description}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

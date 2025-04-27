@@ -76,3 +76,21 @@
   color: #848484;
   margin-top: 0.2rem;
 }
+
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+  background: #fbfbfb;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 2rem 4rem;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboardContainer {
+  display: flex;
+}
+
+

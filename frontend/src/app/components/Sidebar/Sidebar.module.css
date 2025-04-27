@@ -1,0 +1,58 @@
+.sidebar {
+  background: white;
+  height: 100vh;
+  width: 250px;
+  transition: width 0.4s ease;
+  overflow: hidden;
+  border-right: 1px solid #eee;
+}
+
+.closed {
+  width: 70px;
+}
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.toggleButton {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  cursor: pointer;
+  padding-left: 1rem;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: bold;
+  color: #b0b0b0;
+  margin-bottom: 0.5rem;
+  transition: all 0.4s ease;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  color: black;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.linkText {
+  transition: all 0.4s ease;
+}
+
+.hiddenText {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
