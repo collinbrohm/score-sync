@@ -15,7 +15,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!firstName || !lastName || !username || !email || !password) {
@@ -23,30 +23,43 @@ export default function SignUp() {
       return;
     }
 
-    console.log('Signing up with:', {
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-    });
+    try {
+      const response = await fetch('http://localhost:3000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          username: username,
+          email: email,
+          password: password
+        })
+      });
 
-    router.push('/Dashboard');
+      if (response.ok) {
+        console.log('Sign up successful');
+        router.push('/Dashboard'); // Only route if signup succeeds
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || 'Signup failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      alert('Signup failed. Please check your server connection.');
+    }
   };
 
   return (
     <div className={styles.container}>
       <form className={styles.formBox} onSubmit={handleSubmit}>
         <h1 className={styles.heading}>WELCOME TO SCORESYNC</h1>
-        <p className={styles.subheading}>
-          Get started now! Please enter your details.
-        </p>
+        <p className={styles.subheading}>Get started now! Please enter your details.</p>
 
         <div className={styles.row}>
           <div className={styles.halfInput}>
-            <label htmlFor="firstName" className={styles.label}>
-              First Name
-            </label>
+            <label htmlFor="firstName" className={styles.label}>First Name</label>
             <input
               id="firstName"
               type="text"
@@ -58,9 +71,7 @@ export default function SignUp() {
             />
           </div>
           <div className={styles.halfInput}>
-            <label htmlFor="lastName" className={styles.label}>
-              Last Name
-            </label>
+            <label htmlFor="lastName" className={styles.label}>Last Name</label>
             <input
               id="lastName"
               type="text"
@@ -73,9 +84,7 @@ export default function SignUp() {
           </div>
         </div>
 
-        <label htmlFor="username" className={styles.label}>
-          Username
-        </label>
+        <label htmlFor="username" className={styles.label}>Username</label>
         <input
           id="username"
           type="text"
@@ -86,9 +95,7 @@ export default function SignUp() {
           required
         />
 
-        <label htmlFor="email" className={styles.label}>
-          Email
-        </label>
+        <label htmlFor="email" className={styles.label}>Email</label>
         <input
           id="email"
           type="email"
@@ -99,9 +106,7 @@ export default function SignUp() {
           required
         />
 
-        <label htmlFor="password" className={styles.label}>
-          Password
-        </label>
+        <label htmlFor="password" className={styles.label}>Password</label>
         <input
           id="password"
           type="password"
@@ -112,9 +117,7 @@ export default function SignUp() {
           required
         />
 
-        <button type="submit" className={styles.signUpButton}>
-          Sign Up
-        </button>
+        <button type="submit" className={styles.signUpButton}>Sign Up</button>
 
         <p className={styles.loginRedirect}>
           Already have an account? <Link href="/Login">Click here!</Link>
@@ -123,27 +126,9 @@ export default function SignUp() {
 
       <div className={styles.rightSide}>
         <div className={styles.sportsImages}>
-          <Image
-            src="/playing_rugby.png"
-            alt="rugby"
-            width={186}
-            height={186}
-            className={styles.rugby}
-          />
-          <Image
-            src="/ultimate_frisbee.png"
-            alt="frisbee"
-            width={186}
-            height={186}
-            className={styles.frisbee}
-          />
-          <Image
-            src="/playing_basketball.png"
-            alt="basketball"
-            width={186}
-            height={186}
-            className={styles.basketball}
-          />
+          <Image src="/playing_rugby.png" alt="rugby" width={186} height={186} className={styles.rugby} />
+          <Image src="/ultimate_frisbee.png" alt="frisbee" width={186} height={186} className={styles.frisbee} />
+          <Image src="/playing_basketball.png" alt="basketball" width={186} height={186} className={styles.basketball} />
         </div>
       </div>
     </div>

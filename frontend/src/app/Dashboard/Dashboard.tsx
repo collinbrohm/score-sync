@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Header from '../components/Header/Header';
 import Image from 'next/image';
 import styles from './Dashboard.module.css';
 
-// Helper to get sport image path
+// Helper to map sports to their icons
 const getSportImage = (sport: string) => {
   switch (sport.toLowerCase()) {
     case 'football':
@@ -20,36 +20,53 @@ const getSportImage = (sport: string) => {
     case 'volleyball':
       return '/volleyball.png';
     default:
-      return '/default_team.png'; // fallback in case sport name doesn't match
+      return '/default_team.png'; // fallback if no matching sport
   }
 };
 
+// Helper to handle player image or default
+const getPlayerImage = (image: string | null) => {
+  return image ? image : '/defaultProfile.svg';
+};
+
 export default function Dashboard() {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-
-  // This will be replaced later with real backend data
-  const username = 'USERNAME HERE'; // placeholder for now
-
-  // Placeholder teams
-  const teams = [
-    { name: 'Team 1', sport: 'Basketball' },
-    { name: 'Team 2', sport: 'Football' },
-    { name: 'Team 3', sport: 'Soccer' },
-    { name: 'Team 4', sport: 'Baseball' },
-    { name: 'Team 5', sport: 'Volleyball' },
-  ];
-
-  // Placeholder players
-  const players = [
-    { name: 'Lionel Messi', description: '#10 GOAT • Description goes here', image: '/lionel_messi.jpg' },
-    { name: 'LeBron James', description: '6\'9" • Description goes here', image: '/lebron_james.jpg' },
-    { name: 'Kirby Joseph', description: 'DB • Description goes here', image: '/kirby_joseph.jpg' },
-    { name: 'Ronald Acuña Jr.', description: 'OF • Description goes here', image: '/ronald_acuna.jpg' },
-  ];
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [username, setUsername] = useState('Loading...');
+  const [teams, setTeams] = useState([]);
+  const [players, setPlayers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleToggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/dashboard'); // not really sure if this is need for flask? Idk
+
+        const data = await response.json();
+
+        setUsername(data.username);
+        setTeams(data.teams);
+        setPlayers(data.players);
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <p>Loading dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.dashboardContainer}>
@@ -58,18 +75,18 @@ export default function Dashboard() {
       <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ''}`}>
         <Header />
 
-        {/* Banner Section */}
+        {/* Banner */}
         <div className={styles.banner}>
           <div className={styles.bannerText}>
             <div>WELCOME BACK</div>
-            <div>{username}</div> {/* Replace this with actual username from backend */}
+            <div>{username}</div>
           </div>
         </div>
 
-        {/* My Teams Section */}
+        {/* My Teams */}
         <h2 className={styles.sectionTitle}>My Teams</h2>
         <div className={styles.scrollContainer}>
-          {teams.map((team, index) => (
+          {teams.map((team: any, index: number) => (
             <div key={index} className={styles.teamCard}>
               <Image
                 src={getSportImage(team.sport)}
@@ -83,13 +100,13 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Players Section */}
+        {/* Players */}
         <h2 className={styles.sectionTitle}>Players</h2>
         <div className={styles.scrollContainer}>
-          {players.map((player, index) => (
+          {players.map((player: any, index: number) => (
             <div key={index} className={styles.playerCard}>
               <Image
-                src={player.image}
+                src={getPlayerImage(player.image)}
                 alt={player.name}
                 width={200}
                 height={120}
