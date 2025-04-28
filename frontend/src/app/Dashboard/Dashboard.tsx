@@ -80,7 +80,7 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       <Sidebar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
-
+      
       <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ''}`}>
         <Navbar />
 
