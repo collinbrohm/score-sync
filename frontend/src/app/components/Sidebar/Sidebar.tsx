@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
         {/* SOCIAL Section */}
         <div className={styles.section}>
           <h2 className={`${styles.sectionTitle} ${!isOpen ? styles.hiddenText : ''}`}>Social</h2>
-          <Link href="/profile" className={styles.link}>
+          <Link href="/PlayerProfile" className={styles.link}>
             <Image src="/playersIcon.png" alt="Player Profile" width={30} height={30} />
             <span className={`${styles.linkText} ${!isOpen ? styles.hiddenText : ''}`}>Player Profile</span>
           </Link>

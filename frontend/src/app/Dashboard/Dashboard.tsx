@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Header from '../components/Header/Header';
 import Image from 'next/image';
 import styles from './Dashboard.module.css';
 
-// Helper to map sports to their icons
+// Helper functions
 const getSportImage = (sport: string) => {
   switch (sport.toLowerCase()) {
     case 'football':
@@ -20,16 +21,17 @@ const getSportImage = (sport: string) => {
     case 'volleyball':
       return '/volleyball.png';
     default:
-      return '/default_team.png'; // fallback if no matching sport
+      return '/defaultSport.png';
   }
 };
 
-// Helper to handle player image or default
 const getPlayerImage = (image: string | null) => {
   return image ? image : '/defaultProfile.svg';
 };
 
 export default function Dashboard() {
+  const router = useRouter();
+
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [username, setUsername] = useState('Loading...');
   const [teams, setTeams] = useState([]);
@@ -40,11 +42,18 @@ export default function Dashboard() {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  const handleCreateLeague = () => {
+    router.push('/CreateLeague');
+  };
+
+  const handleTeamClick = (teamId: number) => {
+    router.push(`/TeamStats/${teamId}`);
+  };
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/dashboard'); // not really sure if this is need for flask? Idk
-
+        const response = await fetch('http://localhost:5000/api/dashboard'); // Assuming Flask backend
         const data = await response.json();
 
         setUsername(data.username);
@@ -73,7 +82,7 @@ export default function Dashboard() {
       <Sidebar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
 
       <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ''}`}>
-        <Header />
+        <Header username={username} />
 
         {/* Banner */}
         <div className={styles.banner}>
@@ -84,10 +93,20 @@ export default function Dashboard() {
         </div>
 
         {/* My Teams */}
-        <h2 className={styles.sectionTitle}>My Teams</h2>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>My Teams</h2>
+          <button className={styles.plusButton} onClick={handleCreateLeague}>
+            <Image src="/plusIcon.png" alt="Add Team" width={30} height={30} />
+          </button>
+        </div>
+
         <div className={styles.scrollContainer}>
           {teams.map((team: any, index: number) => (
-            <div key={index} className={styles.teamCard}>
+            <div
+              key={index}
+              className={styles.teamCard}
+              onClick={() => handleTeamClick(team.id)} // Assume team has an `id` field
+            >
               <Image
                 src={getSportImage(team.sport)}
                 alt={team.sport}
