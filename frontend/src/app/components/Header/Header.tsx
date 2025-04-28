@@ -1,45 +1,24 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import Link from 'next/link';
 import styles from './Header.module.css';
 
-interface HeaderProps {
-  username?: string;
-  profileImage?: string;
-}
-
-export default function Header({ username, profileImage }: HeaderProps) {
-  const router = useRouter();
-
-  const handleProfileClick = () => {
-    router.push('/Settings');
-  };
-
+export default function Header() {
   return (
-    <div className={styles.header}>
-      <div className={styles.searchBox}>
-        <Image src="/search.png" alt="Search" width={20} height={20} />
-        <input type="text" placeholder="search..." />
-        <Image src="/close.png" alt="Close" width={20} height={20} />
+    <nav className={styles.navbar}>
+      <div className={styles.logo}>SCORESYNC</div>
+      <ul className={styles.navLinks}>
+        <li>Home</li>
+        <li>About us</li>
+        <li>Services</li>
+        <li>Testimonials</li>
+      </ul>
+      <div className={styles.authButtons}>
+        <Link href="/Login">
+          <button className={styles.signIn}>Sign in</button>
+        </Link>
+        <Link href="/SignUp">
+          <button className={styles.register}>Register</button>
+        </Link>
       </div>
-
-      <div className={styles.icons}>
-        <Image src="/notification.png" alt="Notifications" width={24} height={24} />
-        <Image src="/chat.png" alt="Chat" width={24} height={24} />
-        <div className={styles.profile} onClick={handleProfileClick}>
-          <Image
-            src={profileImage ? profileImage : '/avatarDefault.png'}
-            alt="User Profile"
-            width={40}
-            height={40}
-            className={styles.profileImage}
-          />
-          <span className={styles.username}>
-            {username || 'USERNAME'}
-          </span>
-        </div>
-      </div>
-    </div>
+    </nav>
   );
 }

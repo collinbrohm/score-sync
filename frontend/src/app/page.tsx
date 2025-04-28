@@ -1,10 +1,10 @@
-import Navbar from './components/Navbar/Navbar';
+import Header from './components/Header/Header';
 import HeroBanner from './components/HeroBanner/HeroBanner';
 
 export default function LandingPage() {
   return (
     <main>
-      <Navbar />
+      <Header />
       <HeroBanner />
     </main>
   );

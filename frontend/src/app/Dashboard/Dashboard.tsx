@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '../components/Sidebar/Sidebar';
-import Header from '../components/Header/Header';
+import Navbar from '../components/Navbar/Navbar';
 import Image from 'next/image';
 import styles from './Dashboard.module.css';
 
@@ -82,7 +82,7 @@ export default function Dashboard() {
       <Sidebar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
 
       <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ''}`}>
-        <Header username={username} />
+        <Navbar />
 
         {/* Banner */}
         <div className={styles.banner}>
