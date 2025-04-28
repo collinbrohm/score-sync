@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function RosterSection() {
   // Hardcoded starting roster for visualization
-  //
+  
   const [roster, setRoster] = useState([
     { id: 1, firstName: "Alice", lastName: "Anderson", jerseyNumber: 7, email: "alice@example.com" },
   ]);
