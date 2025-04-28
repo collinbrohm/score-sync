@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './ui/Card';
+import Sidebar from './Sidebar/Sidebar';
 
 interface LeagueRulesProps {
   rules: string;
@@ -12,6 +13,7 @@ const LeagueRules: React.FC<LeagueRulesProps> = ({ rules, onChange }) => {
   };
   
   return (
+    
     <Card title="League Rules">
       <div className="mb-4">
         <label htmlFor="rules" className="block mb-2 text-sm font-medium text-gray-700">

@@ -84,9 +84,15 @@
   background: #fbfbfb;
 }
 
+.plusButton {
+  padding-right: 4rem;
+  cursor: pointer;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+}
 .mainContent {
   flex-grow: 1;
-
   transition: margin-left 0.3s ease;
 }
 
@@ -100,14 +106,6 @@
   justify-content: space-between;
 }
 
-.plusButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
 
 
 
