@@ -11,6 +11,7 @@ import LeagueRules from "../components/LeagueRules";
 import Button from "../components/ui/Button";
 import ProgressSteps from "../components/ui/ProgressSteps";
 import { ShoppingBasket as Basketball } from "lucide-react";
+import Navbar from "../components/Navbar/Navbar";
 
 const initialFormData: LeagueFormData = {
   leagueSettings: {
@@ -161,42 +162,45 @@ const CreateLeague: React.FC = () => {
   const isLastStep = currentStep === steps.length - 1;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-10 text-center">
-        <div className="inline-flex items-center justify-center bg-orange-100 p-3 rounded-full mb-4">
-          <Basketball size={32} className="text-orange-500" />
+    <div className="bg-gray-50 min-h-screen">
+      <Navbar />
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="mb-10 text-center">
+          <div className="inline-flex items-center justify-center bg-orange-100 p-3 rounded-full mb-4">
+            <Basketball size={32} className="text-orange-500" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Create a Basketball League
+          </h1>
+          <p className="text-gray-600">
+            Set up your league, add teams, and configure your preferences
+          </p>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Create a Basketball League
-        </h1>
-        <p className="text-gray-600">
-          Set up your league, add teams, and configure your preferences
-        </p>
-      </div>
 
-      <ProgressSteps steps={steps} currentStep={currentStep} />
+        <ProgressSteps steps={steps} currentStep={currentStep} />
 
-      <form onSubmit={handleSubmit}>
-        {renderStep()}
+        <form onSubmit={handleSubmit}>
+          {renderStep()}
 
-        <div className="mt-8 flex justify-between">
-          {currentStep > 0 && (
-            <Button type="button" variant="outline" onClick={handlePrevStep}>
-              Back
-            </Button>
-          )}
-
-          <div className="ml-auto">
-            {isLastStep ? (
-              <Button type="submit">Create League</Button>
-            ) : (
-              <Button type="button" onClick={handleNextStep}>
-                Continue
+          <div className="mt-8 flex justify-between">
+            {currentStep > 0 && (
+              <Button type="button" variant="outline" onClick={handlePrevStep}>
+                Back
               </Button>
             )}
+
+            <div className="ml-auto">
+              {isLastStep ? (
+                <Button type="submit">Create League</Button>
+              ) : (
+                <Button type="button" onClick={handleNextStep}>
+                  Continue
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
