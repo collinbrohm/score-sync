@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { LeagueFormData, Team, SportType } from "../types/league";
 import LeagueBasicInfo from "../components/LeagueBasicInfo";
@@ -11,7 +10,11 @@ import LeagueRules from "../components/LeagueRules";
 import Button from "../components/ui/Button";
 import ProgressSteps from "../components/ui/ProgressSteps";
 import { ShoppingBasket as Basketball } from "lucide-react";
-import Navbar from "../components/Navbar/Navbar";
+import { useRouter } from "next/navigation";
+
+interface CreateLeagueProps {
+  onSuccess: () => void;
+}
 
 const initialFormData: LeagueFormData = {
   leagueSettings: {
@@ -46,9 +49,11 @@ const initialFormData: LeagueFormData = {
 
 const steps = ["Basic Info", "Game Settings", "Teams", "Schedule", "Finalize"];
 
-const CreateLeague: React.FC = () => {
+const CreateLeague: React.FC<CreateLeagueProps> = ({ onSuccess }) => {
   const [formData, setFormData] = useState<LeagueFormData>(initialFormData);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -64,11 +69,21 @@ const CreateLeague: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to your backend
-    alert("League created successfully!");
+    setIsSubmitting(true);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("Form submitted:", formData);
+      onSuccess();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("There was an error creating the league. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+      router.push("/Dashboard");
+    }
   };
 
   const updateLeagueSettings = (settings: typeof formData.leagueSettings) => {
@@ -162,45 +177,53 @@ const CreateLeague: React.FC = () => {
   const isLastStep = currentStep === steps.length - 1;
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center justify-center bg-orange-100 p-3 rounded-full mb-4">
-            <Basketball size={32} className="text-orange-500" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Create a Basketball League
-          </h1>
-          <p className="text-gray-600">
-            Set up your league, add teams, and configure your preferences
-          </p>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="mb-10 text-center">
+        <div className="inline-flex items-center justify-center bg-orange-100 p-3 rounded-full mb-4">
+          <Basketball size={32} className="text-orange-500" />
         </div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Create a Basketball League
+        </h1>
+        <p className="text-gray-600">
+          Set up your league, add teams, and configure your preferences
+        </p>
+      </div>
 
-        <ProgressSteps steps={steps} currentStep={currentStep} />
+      <ProgressSteps steps={steps} currentStep={currentStep} />
 
-        <form onSubmit={handleSubmit}>
-          {renderStep()}
+      <form onSubmit={handleSubmit}>
+        {renderStep()}
 
-          <div className="mt-8 flex justify-between">
-            {currentStep > 0 && (
-              <Button type="button" variant="outline" onClick={handlePrevStep}>
-                Back
+        <div className="mt-8 flex justify-between">
+          {currentStep > 0 && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handlePrevStep}
+              disabled={isSubmitting}
+            >
+              Back
+            </Button>
+          )}
+
+          <div className="ml-auto">
+            {isLastStep ? (
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Creating League..." : "Create League"}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={handleNextStep}
+                disabled={isSubmitting}
+              >
+                Continue
               </Button>
             )}
-
-            <div className="ml-auto">
-              {isLastStep ? (
-                <Button type="submit">Create League</Button>
-              ) : (
-                <Button type="button" onClick={handleNextStep}>
-                  Continue
-                </Button>
-              )}
-            </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
