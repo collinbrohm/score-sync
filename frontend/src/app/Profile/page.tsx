@@ -21,7 +21,7 @@ const initialProfile: ProfileData = {
   email: "john.smith@example.com",
   phone: "(555) 123-4567",
   position: "Point Guard",
-  teams: ["Downtown Basketball League", "City Championship"],
+  teams: ["SWE League", "DAWG Hoops"],
 };
 
 const Profile: React.FC = () => {
