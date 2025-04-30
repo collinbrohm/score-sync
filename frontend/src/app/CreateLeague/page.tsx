@@ -49,6 +49,19 @@ const steps = ["Basic Info", "Game Settings", "Teams", "Schedule", "Finalize"];
 const CreateLeague: React.FC = () => {
   const [formData, setFormData] = useState<LeagueFormData>(initialFormData);
   const [currentStep, setCurrentStep] = useState(0);
+  const [leagueName, setLeagueName] = useState('');
+  const [location, setLocation] = useState('');
+  const [season, setSeason] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [quarterLength, setQuarterLength] = useState('');
+  const [shotClock, setShotClock] = useState('');
+  const [otLength, setOtLength] = useState('');
+  const [foulsPerQt, setFoulsPerQt] = useState('');
+  const [adminName, setAdminName] = useState('');
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPhoneNum, setAdminPhoneNum] = useState('');
+  const [leagueRules, setLeagueRules] = useState('');
 
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -64,12 +77,47 @@ const CreateLeague: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Here you would typically send the data to your backend
-    alert("League created successfully!");
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  console.log("Form submitted:", formData);
+
+  const payload = {
+    league_name: formData.leagueSettings.name,
+    location: formData.leagueSettings.location,
+    season: formData.leagueSettings.season,
+    start_date: formData.leagueSettings.startDate,
+    end_date: formData.leagueSettings.endDate,
+    quarter_length: formData.basketballSettings.quarterLength,
+    shot_clock: formData.basketballSettings.shotClockLength,
+    ot_length: formData.basketballSettings.overtimeLength,
+    fouls_per_qt: formData.basketballSettings.foulsPerQuarter,
+    admin_name: formData.administrator.name,
+    admin_email: formData.administrator.email,
+    admin_phone_num: formData.administrator.phone,
+    league_rules: formData.rules,
   };
+
+  try {
+    const response = await fetch('http://localhost:5000/league', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      alert("League created successfully!");
+    } else {
+      alert("Failed to create league.");
+    }
+  } catch (error) {
+    console.error("Error submitting league:", error);
+    alert("An error occurred.");
+  }
+};
+
+  
 
   const updateLeagueSettings = (settings: typeof formData.leagueSettings) => {
     setFormData({
