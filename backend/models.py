@@ -10,9 +10,9 @@ class User:
     first_name: str
     last_name: str
     email: str
+    password: str
     username: str
-    user_class: str # Freshman, sophmore, ect
-    birthday: str
+    birthday: Optional[str] = None
     teams: Optional[list[str]] = None
     
 @dataclass(frozen=True)
@@ -60,19 +60,32 @@ class BasketballDTO:
 class TeamDTO:
     """Used to store data when a team is created."""
     team_name: str
-    team_abbr: str
-    team_id: int
-    roster_names: list[str]
-    sport: str
-    level: str # Such as competition, recreational
-    date_of_creation: datetime
-    semester: str # Fall or Spring
-    year: int
-    record: str
+    contact_email: str
+    contact_peson: str
+    league_id: int
+    record: Optional[str]
     wins: Optional[int] = None # To cleanly update the record
     losses: Optional[int] = None
     ties: Optional[int] = None
+    roster_names: Optional[list[str]] = None
 
+@dataclass(frozen=True)
+class LeagueDTO:
+    """Used to store newly created leagues."""
+    league_name: str
+    league_id: Optional[int] = None  
+    location: Optional[str] = None
+    season: Optional[str] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    quarter_length: Optional[str] = None
+    shot_clock: Optional[str] = None
+    ot_length: Optional[str] = None
+    fouls_per_qt: Optional[str] = None
+    admin_name: Optional[str] = None
+    admin_email: Optional[str] = None
+    admin_phone_num: Optional[str] = None
+    league_rules: Optional[str] = None
 
 @dataclass(frozen=True)
 class GameDTO:

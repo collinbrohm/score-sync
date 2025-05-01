@@ -12,8 +12,7 @@
             "last_name": "TEXT",
             "username": "TEXT",
             "email": "TEXT",
-            "user_class": "TEXT",
-            "birthday": "TEXT",
+            "password": "TEXT",
             "teams": "TEXT[]"
         },
         "players": {
@@ -26,18 +25,31 @@
         "teams": {
             "team_id": "SERIAL PRIMARY KEY",
             "team_name": "TEXT",
-            "team_abbr": "TEXT",
             "roster_names": "TEXT[]",
-            "sport": "TEXT",
-            "level": "TEXT",
-            "date_of_creation": "TIMESTAMP",
-            "semester": "TEXT",
-            "year": "INTEGER",
+            "contact_email": "TEXT",
+            "contact_person": "TEXT",
             "record": "TEXT",
             "wins": "INTEGER",
             "losses": "INTEGER",
             "ties": "INTEGER",
-            "game_ids": "INTEGER[]"
+            "game_ids": "INTEGER[]",
+            "league_id": "INTEGER"
+        },
+        "leagues": {
+            "league_id": "SERIAL PRIMARY KEY",
+            "league_name": "TEXT UNIQUE NOT NULL",
+            "location": "TEXT",
+            "season": "TEXT",
+            "start_date": "TEXT",
+            "end_date": "TEXT",
+            "quarter_length": "TEXT",
+            "shot_clock": "TEXT",
+            "ot_length": "TEXT",
+            "fouls_per_qt": "TEXT",
+            "admin_name": "TEXT",
+            "admin_email": "TEXT",
+            "admin_phone_num": "TEXT",
+            "league_rules": "TEXT"
         },
         "games": {
            "game_id": "SERIAL PRIMARY KEY", 

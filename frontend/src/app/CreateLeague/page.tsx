@@ -54,6 +54,19 @@ const CreateLeague: React.FC<CreateLeagueProps> = ({ onSuccess }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const [leagueName, setLeagueName] = useState('');
+  const [location, setLocation] = useState('');
+  const [season, setSeason] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [quarterLength, setQuarterLength] = useState('');
+  const [shotClock, setShotClock] = useState('');
+  const [otLength, setOtLength] = useState('');
+  const [foulsPerQt, setFoulsPerQt] = useState('');
+  const [adminName, setAdminName] = useState('');
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPhoneNum, setAdminPhoneNum] = useState('');
+  const [leagueRules, setLeagueRules] = useState('');
 
   const handleNextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -70,21 +83,50 @@ const CreateLeague: React.FC<CreateLeagueProps> = ({ onSuccess }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Form submitted:", formData);
-      onSuccess();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("There was an error creating the league. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-      router.push("/Dashboard");
-    }
+  const payload = {
+    league_name: formData.leagueSettings.name,
+    location: formData.leagueSettings.location,
+    season: formData.leagueSettings.season,
+    start_date: formData.leagueSettings.startDate,
+    end_date: formData.leagueSettings.endDate,
+    quarter_length: formData.basketballSettings.quarterLength,
+    shot_clock: formData.basketballSettings.shotClockLength,
+    ot_length: formData.basketballSettings.overtimeLength,
+    fouls_per_qt: formData.basketballSettings.foulsPerQuarter,
+    admin_name: formData.administrator.name,
+    admin_email: formData.administrator.email,
+    admin_phone_num: formData.administrator.phone,
+    league_rules: formData.rules,
   };
+
+  try {
+    const response = await fetch('http://localhost:5000/league', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      onSuccess(); // Optional: show UI feedback
+      router.push("/Dashboard");
+    } else {
+      alert("Failed to create league.");
+    }
+  } catch (error) {
+    console.error("Error submitting league:", error);
+    alert("An error occurred.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+
+  
 
   const updateLeagueSettings = (settings: typeof formData.leagueSettings) => {
     setFormData({

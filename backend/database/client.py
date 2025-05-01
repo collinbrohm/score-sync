@@ -2,7 +2,7 @@
 
 import psycopg2
 
-from models import User, TeamDTO, Player
+from models import User, TeamDTO, Player, LeagueDTO
 
 class DatabaseClient:
     def __init__(self):
@@ -13,6 +13,12 @@ class DatabaseClient:
                 password = '',
                 port = 5432)
         
+    def get_users(self, email: str, password: str) -> bool:
+        connection = self._client   
+        cursor = connection.cursor()
+        query = f'select email, password from where email={email} AND password={password}'
+        cursor.execute(query)
+        connection.commit()
 
     def persist_users(self, data: User):
         """Function to persist user data into the database.
@@ -21,14 +27,13 @@ class DatabaseClient:
             data: A User object that contains needed user information.
             
         """
-
         connection = self._client
         cursor = connection.cursor()
         query = '''
         INSERT INTO users (
             first_name, last_name, email,
-            user_name, user_class, birthday, teams
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+            username, teams
+        ) VALUES (%s, %s, %s, %s, %s)
         '''
         teams = ','.join(data.teams) if data.teams else None
         cursor.execute(query, (
@@ -36,11 +41,10 @@ class DatabaseClient:
             data.last_name,
             data.email,
             data.username,
-            data.user_class,
-            data.birthday,
             teams,
         ))
         connection.commit()
+        return data
 
     def transform_users(self, data: dict) -> User:
         """Returns a user object.
@@ -53,10 +57,7 @@ class DatabaseClient:
             last_name=data['last_name'],
             username=data['username'],
             email=data['email'],
-            phone_num=data['phone_num'],
-            username=data['username'],
-            user_class=data['user_class'],
-            birthday=data['birthday'],
+            birthday=data.get('birthday'),
             teams=data.get('teams')  
         )
     
@@ -106,7 +107,62 @@ class DatabaseClient:
             jersey_num=['jersey_num']  
         )
 
-
+    def transform_leagues(self, data: dict) -> LeagueDTO:
+        return LeagueDTO(
+            league_name=data["league_name"],
+            location=data.get("location"),
+            season=data.get("season"),
+            start_date=data.get("start_date"),
+            end_date=data.get("end_date"),
+            quarter_length=data.get("quarter_length"),
+            shot_clock=data.get("shot_clock"),
+            ot_length=data.get("ot_length"),
+            fouls_per_qt=data.get("fouls_per_qt"),
+            admin_name=data.get("admin_name"),
+            admin_email=data.get("admin_email"),
+            admin_phone_num=data.get("admin_phone"),
+            league_rules=data.get("league_rules")
+        )
+    
+    
+    def persist_leagues(self, league: LeagueDTO):
+        connection = self._client
+        cursor = connection.cursor()
+        cursor.execute(
+            '''
+            INSERT INTO leagues (
+                league_name,
+                location,
+                season,
+                start_date,
+                end_date,
+                quarter_length,
+                shot_clock,
+                ot_length,
+                fouls_per_qt,
+                admin_name,
+                admin_email,
+                admin_phone_num,
+                league_rules
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ''',
+            (
+                league.league_name,
+                league.location,
+                league.season,
+                league.start_date,
+                league.end_date,
+                league.quarter_length,
+                league.shot_clock,
+                league.ot_length,
+                league.fouls_per_qt,
+                league.admin_name,
+                league.admin_email,
+                league.admin_phone_num,
+                league.league_rules
+            )
+        )
+        connection.commit()
 
     
     def persist_teams(self, data: TeamDTO):
@@ -121,16 +177,19 @@ class DatabaseClient:
         cursor = connection.cursor()
         query = '''
         INSERT INTO teams (
-            team_name, team_abbr, team_id, roster_names, sport, level,
-            semester, year, record, wins, losses, ties, game_ids
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            team_name, contact_email, contact_person, league_id
+        ) VALUES (%s, %s, %s, %s)
         '''
         cursor.execute(query, )
         connection.commit()
 
     def transform_teams(self, data) -> TeamDTO:
-        # TODO: To be implemented. 
-        pass
+         return TeamDTO(
+            team_name=data["team_name"],
+            contact_email=data["contact_email"],
+            contact_peson=data["contact_person"],
+            league_id=data["league_id"],
+        )
 
 
         

@@ -4,15 +4,16 @@ import logging
 
 from flask import  Flask, request, jsonify
 from flask_restful import Api, Resource
-
+from flask_cors import CORS
 from database.client import DatabaseClient
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class User(Resource):
-    def post():
+    def post(self):
         user_data = request.json
+        print(user_data)
         db = DatabaseClient()
 
         if not user_data:
@@ -20,7 +21,10 @@ class User(Resource):
             return []
         
         user = db.transform_users(user_data)
-        db.persist_users(user)
+        print('calling persiser users')
+        data = db.persist_users(user)
+        
+        return {"message": "User data persisted successfully."}, 201
 
     def get():
         """Function do display user data."""
@@ -36,7 +40,8 @@ class Player(Resource):
             return []
         
         user = db.transform_players(player_data)
-        db.persist_players(user)
+        data = db.persist_players(user)
+
 
     def get():
         """Function do display user data."""
@@ -68,7 +73,7 @@ class Player(Resource):
         
         player = db.transform_players(player_data)
         db.persist_players(player)
-        
+
 class Game(Resource):
     def post():
         pass
@@ -76,14 +81,33 @@ class Game(Resource):
     def get():
         pass
 
+class Login(Resource):
+    def post(self):
+        return {"Status": "Sucess"}, 200
+    
+    def get():
+        return 200
+    
+class League(Resource):
+    def post(self):
+        league_data = request.json
+        db = DatabaseClient()
+        league = db.transform_leagues(league_data)
+        db.persist_leagues(league)
+        return {"message": "User data persisted successfully."}, 201
+
+
 def main():
     app = Flask(__name__)
+    CORS(app)
     api = Api(app)
     api.add_resource(User, '/user')
     api.add_resource(Team, '/team')
     api.add_resource(Game, '/game')
     api.add_resource(Player, '/player')
-    app.run(host='127.0.0.1')
+    api.add_resource(Login, '/login')
+    api.add_resource(League, '/league')
+    app.run(host='127.0.0.1', port=5000)
 
 if __name__ == '__main__':
     main()
