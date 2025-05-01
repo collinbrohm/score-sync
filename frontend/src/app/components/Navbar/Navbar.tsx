@@ -1,7 +1,10 @@
 import React from "react";
 import { Trophy } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
+
   return (
     <nav className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +19,7 @@ const Navbar: React.FC = () => {
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <a
                 href="Dashboard"
-                className="border-orange-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-orange-5n00 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Dashboard
               </a>
@@ -65,6 +68,7 @@ const Navbar: React.FC = () => {
                 <button
                   type="button"
                   className="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                  onClick={() => router.push("/Profile")}
                 >
                   <span className="sr-only">Open user menu</span>
                   <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">

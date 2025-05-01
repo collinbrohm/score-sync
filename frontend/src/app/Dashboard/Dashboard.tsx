@@ -1,39 +1,39 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Sidebar from '../components/Sidebar/Sidebar';
-import Navbar from '../components/Navbar/Navbar';
-import Image from 'next/image';
-import styles from './Dashboard.module.css';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Sidebar from "../components/Sidebar/Sidebar";
+import Navbar from "../components/Navbar/Navbar";
+import Image from "next/image";
+import styles from "./Dashboard.module.css";
 
 // Helper functions
 const getSportImage = (sport: string) => {
   switch (sport.toLowerCase()) {
-    case 'football':
-      return '/football.png';
-    case 'basketball':
-      return '/basketball.png';
-    case 'soccer':
-      return '/soccer.png';
-    case 'baseball':
-      return '/baseball.png';
-    case 'volleyball':
-      return '/volleyball.png';
+    case "football":
+      return "/football.png";
+    case "basketball":
+      return "/basketball.png";
+    case "soccer":
+      return "/soccer.png";
+    case "baseball":
+      return "/baseball.png";
+    case "volleyball":
+      return "/volleyball.png";
     default:
-      return '/defaultSport.png';
+      return "/defaultSport.png";
   }
 };
 
 const getPlayerImage = (image: string | null) => {
-  return image ? image : '/defaultProfile.svg';
+  return image ? image : "/defaultProfile.svg";
 };
 
 export default function Dashboard() {
   const router = useRouter();
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [username, setUsername] = useState('Loading...');
+  const [username, setUsername] = useState("Loading...");
   const [teams, setTeams] = useState([]);
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ export default function Dashboard() {
   };
 
   const handleCreateLeague = () => {
-    router.push('/CreateLeague');
+    router.push("/CreateLeague");
   };
 
   const handleTeamClick = (teamId: number) => {
@@ -53,14 +53,14 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/dashboard'); // Assuming Flask backend
+        const response = await fetch("http://localhost:5000/api/dashboard"); // Assuming Flask backend
         const data = await response.json();
 
         setUsername(data.username);
         setTeams(data.teams);
         setPlayers(data.players);
       } catch (error) {
-        console.error('Failed to fetch dashboard data:', error);
+        console.error("Failed to fetch dashboard data:", error);
       } finally {
         setLoading(false);
       }
@@ -80,8 +80,12 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       <Sidebar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
-      
-      <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ''}`}>
+
+      <div
+        className={`${styles.mainContent} ${
+          isSidebarOpen ? styles.mainContentShift : ""
+        }`}
+      >
         <Navbar />
 
         {/* Banner */}

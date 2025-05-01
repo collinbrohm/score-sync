@@ -1,11 +1,12 @@
-import Header from './components/Header/Header';
-import HeroBanner from './components/HeroBanner/HeroBanner';
+import Header from "./components/Header/Header";
+import HeroBanner from "./components/HeroBanner/HeroBanner";
+import RootLayout from "./layout";
 
 export default function LandingPage() {
   return (
-    <main>
+    <RootLayout>
       <Header />
       <HeroBanner />
-    </main>
+    </RootLayout>
   );
 }
