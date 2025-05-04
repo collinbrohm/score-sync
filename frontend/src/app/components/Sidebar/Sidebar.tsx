@@ -26,7 +26,7 @@ export default function Sidebar({ isOpen, onToggleSidebar }: SidebarProps) {
             <span className={`${styles.linkText} ${!isOpen ? styles.hiddenText : ''}`}>Browse</span>
           </Link>
           <Link href="/TeamStats" className={styles.link}>
-            <Image src="/statsIcon.png" alt="Stats" width={26} height={26} />
+            <Image src="/statsIcon.png" alt="Stats" width={21} height={21} />
             <span className={`${styles.linkText} ${!isOpen ? styles.hiddenText : ''}`}>Stats</span>
           </Link>
         </div>
