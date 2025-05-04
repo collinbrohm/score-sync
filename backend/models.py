@@ -20,7 +20,7 @@ class Player:
     first_name: str
     last_name: str
     email: str
-    team_name: str
+    team_id: str
     jersey_num: int
 
 @dataclass(frozen=True)
@@ -61,9 +61,9 @@ class TeamDTO:
     """Used to store data when a team is created."""
     team_name: str
     contact_email: str
-    contact_peson: str
+    contact_person: str
     league_id: int
-    record: Optional[str]
+    record: Optional[str] = None
     wins: Optional[int] = None # To cleanly update the record
     losses: Optional[int] = None
     ties: Optional[int] = None

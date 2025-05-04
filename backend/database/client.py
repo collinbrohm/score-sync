@@ -12,13 +12,73 @@ class DatabaseClient:
                 host = '127.0.0.1',
                 password = '',
                 port = 5432)
-        
-    def get_users(self, email: str, password: str) -> bool:
+    
+    def get_teams(self, league_id: int) -> list:
         connection = self._client   
         cursor = connection.cursor()
-        query = f'select email, password from where email={email} AND password={password}'
-        cursor.execute(query)
-        connection.commit()
+        try: 
+            query = '''SELECT * FROM teams WHERE league_id = %s'''
+            cursor.execute(query, (league_id,))
+            rows = cursor.fetchall()
+
+            teams = []
+            for team in rows:
+                print(team)
+                teams.append({
+                    "id": team[0],
+                    "team_name": team[1],
+                    "wins": team[6] or 0,
+                    "losses": team[7] or 0,
+                    "ties": team[8] or 0,
+                    "roster_names": []
+                })
+                
+        finally:
+            print('Teams', teams)
+            cursor.close()
+
+        return {"teams": teams}
+    
+    def update_team_stats(self, league_id: int, team_data: dict) -> bool:
+        connection = self._client   
+        cursor = connection.cursor()
+        team_id = team_data.get("team_id")
+        wins = team_data.get("wins")
+        ties = team_data.get("ties")
+        losses = team_data.get("losses")
+        print('DATA', team_data, team_id, wins, ties, losses, league_id)
+        try:
+            cursor.execute(
+                """
+                UPDATE teams
+                SET wins = %s,
+                    ties = %s,
+                    losses = %s
+                WHERE team_id = %s
+                AND league_id = %s
+                """,
+                (wins, ties, losses, team_id, league_id)
+            )
+        except Exception as e:
+            print(f'Error persisting data with error {e}')
+            return False
+        finally:
+            connection.commit()
+            return True
+    
+    def is_valid_account(self, email: str, password: str) -> bool:
+        connection = self._client   
+        cursor = connection.cursor()
+        try:
+            query = f'''select 1 from users where email= %s AND password = %s
+            '''
+            cursor.execute(query, (email, password))
+            result = cursor.fetchone()
+            if result is not None:
+                return True
+        finally:
+            cursor.close()
+        return False
 
     def persist_users(self, data: User):
         """Function to persist user data into the database.
@@ -32,8 +92,8 @@ class DatabaseClient:
         query = '''
         INSERT INTO users (
             first_name, last_name, email,
-            username, teams
-        ) VALUES (%s, %s, %s, %s, %s)
+            username, password, teams
+        ) VALUES (%s, %s, %s, %s, %s, %s)
         '''
         teams = ','.join(data.teams) if data.teams else None
         cursor.execute(query, (
@@ -41,6 +101,7 @@ class DatabaseClient:
             data.last_name,
             data.email,
             data.username,
+            data.password,
             teams,
         ))
         connection.commit()
@@ -57,7 +118,7 @@ class DatabaseClient:
             last_name=data['last_name'],
             username=data['username'],
             email=data['email'],
-            birthday=data.get('birthday'),
+            password=data.get('password'),
             teams=data.get('teams')  
         )
     
@@ -74,14 +135,14 @@ class DatabaseClient:
         query = '''
         INSERT INTO players (
             first_name, last_name, email,
-            team_name, jersey_num
+            team_id, jersey_num
         ) VALUES (%s, %s, %s, %s, %s)
         '''
         cursor.execute(query, (
             data.first_name,
             data.last_name,
             data.email,
-            data.team_name,
+            data.team_id,
             data.jersey_num
         ))
         connection.commit()
@@ -99,12 +160,13 @@ class DatabaseClient:
         Args:
             data: A dict containing user data.
         """
+        print(data)
         return Player(
             first_name=data['first_name'],
             last_name=data['last_name'],
             email=data['email'],
-            team_name=['team_name'],
-            jersey_num=['jersey_num']  
+            team_id=data['team_id'],
+            jersey_num=data.get('jersey_num')
         )
 
     def transform_leagues(self, data: dict) -> LeagueDTO:
@@ -125,7 +187,7 @@ class DatabaseClient:
         )
     
     
-    def persist_leagues(self, league: LeagueDTO):
+    def persist_leagues(self, league: LeagueDTO) -> int:
         connection = self._client
         cursor = connection.cursor()
         cursor.execute(
@@ -145,6 +207,7 @@ class DatabaseClient:
                 admin_phone_num,
                 league_rules
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING league_id
             ''',
             (
                 league.league_name,
@@ -162,34 +225,45 @@ class DatabaseClient:
                 league.league_rules
             )
         )
+        league_id = cursor.fetchone()[0]  
         connection.commit()
+        return league_id
+       
 
-    
-    def persist_teams(self, data: TeamDTO):
+    def persist_teams(self, data: list[TeamDTO]):
         """Function to persist user data into the database.
         
         Args:
             data: A User object that contains needed user information.
             
         """
-
+        
         connection = self._client
         cursor = connection.cursor()
-        query = '''
-        INSERT INTO teams (
-            team_name, contact_email, contact_person, league_id
-        ) VALUES (%s, %s, %s, %s)
-        '''
-        cursor.execute(query, )
-        connection.commit()
+        for team in data:    
+            query = '''
+            INSERT INTO teams (
+                team_name, contact_email, contact_person, league_id
+            ) VALUES (%s, %s, %s, %s)
+            '''
+            cursor.execute(query, (team.team_name, team.contact_email, team.contact_person, team.league_id))
+            connection.commit()
 
-    def transform_teams(self, data) -> TeamDTO:
-         return TeamDTO(
-            team_name=data["team_name"],
-            contact_email=data["contact_email"],
-            contact_peson=data["contact_person"],
-            league_id=data["league_id"],
-        )
+
+    def transform_teams(self, data) -> list[TeamDTO]:
+        result = []
+        print(data)
+        for team in data["teams"]:
+            result.append(
+                TeamDTO(
+                    team_name=team["team_name"],
+                    contact_email=team["contact_email"],
+                    contact_person=team["contact_person"],
+                    league_id=team["league_id"]
+                )
+            )
+        return result
+            
 
 
         

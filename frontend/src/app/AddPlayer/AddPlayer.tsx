@@ -2,113 +2,106 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export default function AddPlayers() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const teamId = searchParams.get('team_id');
+  console.log('TEAM ID', teamId)
+  const [players, setPlayers] = useState<any[]>([]);
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    jerseyNumber: '',
+    email: '',
+  });
 
-  // Hardcoded players for now — will use GET/POST from database in final version
-  const allPlayers = [
-    { id: 1, firstName: "LeBron", lastName: "James" },
-    { id: 2, firstName: "Cristiano", lastName: "Ronaldo" },
-    { id: 3, firstName: "Morgan", lastName: "Gibbs-White" },
-    { id: 4, firstName: "Anthony", lastName: "Davis" },
-    { id: 5, firstName: "Dennis", lastName: "Schroder" },
-  ];
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [selectedPlayers, setSelectedPlayers] = useState<any[]>([]);
-
-  // Later: Replace with GET request from database
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const results = allPlayers.filter((player) =>
-      `${player.firstName} ${player.lastName}`
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-    );
-    setSearchResults(results);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAddPlayer = (player: any) => {
-    if (!selectedPlayers.find((p) => p.id === player.id)) {
-      setSelectedPlayers([...selectedPlayers, player]);
+  const handleAddPlayer = async () => {
+    const payload = {
+      team_id: teamId,
+      first_name: form.firstName,
+      last_name: form.lastName,
+      jersey_number: parseInt(form.jerseyNumber),
+      email: form.email,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/player', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error('Failed to add player');
+      const data = await response.json();
+      setPlayers([...players, data]);
+
+      setForm({ firstName: '', lastName: '', jerseyNumber: '', email: '' });
+    } catch (err) {
+      console.error('Error adding player:', err);
+      alert('Failed to add player');
     }
-  };
-
-  const handleDone = () => {
-    localStorage.setItem('selectedPlayers', JSON.stringify(selectedPlayers));
-    router.push('/TeamStats'); // Redirect back to TeamStats page
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground p-8 font-staatliches">
-      <div className="max-w-4xl mx-auto space-y-10">
-        <h1 className="text-4xl mb-6 text-center">Add Players</h1>
+      <div className="max-w-3xl mx-auto space-y-10">
+        <h1 className="text-4xl mb-6 text-center">Add a Player</h1>
 
-        {/* Search Form */}
-        <form onSubmit={handleSearch} className="flex space-x-4">
+        <div className="space-y-4">
           <input
             type="text"
-            placeholder="Search by name"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            required
-            className="flex-1 p-2 border-2 border-gray-300 rounded-md"
+            name="firstName"
+            placeholder="First Name"
+            value={form.firstName}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
           />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-gray-700 transition"
-          >
-            Search
-          </button>
-        </form>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={form.lastName}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="number"
+            name="jerseyNumber"
+            placeholder="Jersey Number"
+            value={form.jerseyNumber}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
 
-        {/* Search Results */}
-        <div className="space-y-4">
-          <h3 className="text-2xl">Search Results:</h3>
-          {searchResults.length > 0 ? (
-            searchResults.map((player) => (
-              <div
-                key={player.id}
-                className="flex items-center justify-between p-4 bg-gray-100 rounded-md shadow-sm"
-              >
-                <span>{player.firstName} {player.lastName}</span>
-                <button
-                  onClick={() => handleAddPlayer(player)}
-                  className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-                >
-                  Add
-                </button>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No players found.</p>
-          )}
+          <button
+            onClick={handleAddPlayer}
+            className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          >
+            Add Player
+          </button>
         </div>
 
-        {/* Selected Players */}
-        <div className="space-y-4">
-          <h3 className="text-2xl">Selected Players:</h3>
-          {selectedPlayers.length > 0 ? (
-            selectedPlayers.map((player) => (
-              <p key={player.id}>
-                {player.firstName} {player.lastName}
-              </p>
-            ))
-          ) : (
-            <p className="text-gray-500">No players selected yet.</p>
-          )}
-        </div>
-
-        {/* Done Button */}
-        <div className="flex justify-center">
-          <button
-            onClick={handleDone}
-            className="px-6 py-3 bg-foreground text-background rounded-lg hover:bg-gray-700 transition"
-          >
-            Done
-          </button>
+        <div className="mt-8">
+          <h2 className="text-2xl mb-4">Added Players</h2>
+          {players.map((p) => (
+            <div key={p.id} className="border p-4 rounded mb-2 bg-white shadow-sm">
+              <p>{p.first_name} {p.last_name} (#{p.jersey_number}) - {p.email}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

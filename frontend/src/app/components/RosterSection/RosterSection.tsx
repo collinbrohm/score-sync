@@ -1,16 +1,25 @@
 'use client';
-import { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
-export default function RosterSection() {
-  // Hardcoded starting roster for visualization
-  
-  const [roster, setRoster] = useState([
-    { id: 1, firstName: "Alice", lastName: "Anderson", jerseyNumber: 7, email: "alice@example.com" },
-  ]);
+interface Player {
+  id: number;
+  firstName: string;
+  lastName: string;
+  jerseyNumber?: number;
+  email?: string;
+}
 
+interface RosterSectionProps {
+  roster: Player[];
+  setRoster: (players: Player[]) => void;
+  teamId: number;
+}
+
+
+export default function RosterSection({ roster, setRoster, teamId }: RosterSectionProps){
   const handleRemovePlayer = (id: number) => {
-    const updatedRoster = roster.filter(player => player.id !== id);
+    const updatedRoster = roster.filter((player) => player.id !== id);
     setRoster(updatedRoster);
   };
 
@@ -18,14 +27,13 @@ export default function RosterSection() {
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-staatliches">Team Roster</h2>
-        <Link href="/AddPlayer">
-          <button className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-gray-700 transition">
-            Add Player
-          </button>
-        </Link>
+        <Link href={`/AddPlayer?team_id=${teamId}`}>
+        <button className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-gray-700 transition">
+          Add Player
+        </button>
+      </Link>
       </div>
 
-      {/* Table Section */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-background border border-gray-300">
           <thead className="bg-gray-100">

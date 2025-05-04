@@ -1,6 +1,9 @@
-import React from "react";
-import { Trophy } from "lucide-react";
-import { useRouter } from "next/navigation";
+'use client';
+
+import React from 'react';
+import { Trophy } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -12,37 +15,36 @@ const Navbar: React.FC = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
               <Trophy className="h-8 w-8 text-orange-500" />
-              <span className="ml-2 text-xl font-bold text-gray-900">
-                SCORESYNC
-              </span>
+              <span className="ml-2 text-xl font-bold text-gray-900">SCORESYNC</span>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <a
-                href="Dashboard"
-                className="border-orange-5n00 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              <Link
+                href="/Dashboard"
+                className="text-gray-900 border-orange-500 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Dashboard
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/CreateLeague"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Leagues
-              </a>
-              <a
-                href="#"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              </Link>
+              <Link
+                href="/TeamStats"
+                className="text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Teams
-              </a>
-              <a
-                href="#"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              </Link>
+              <Link
+                href="/Players"
+                className="text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Players
-              </a>
+              </Link>
             </div>
           </div>
+
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <button className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
               <span className="sr-only">View notifications</span>
@@ -64,20 +66,19 @@ const Navbar: React.FC = () => {
             </button>
 
             <div className="ml-3 relative">
-              <div>
-                <button
-                  type="button"
-                  className="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                  onClick={() => router.push("/Profile")}
-                >
-                  <span className="sr-only">Open user menu</span>
-                  <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
-                    JS
-                  </div>
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => router.push('/Profile')}
+                className="bg-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+              >
+                <span className="sr-only">Open user menu</span>
+                <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
+                  JS
+                </div>
+              </button>
             </div>
           </div>
+
           <div className="-mr-2 flex items-center sm:hidden">
             <button
               type="button"

@@ -86,7 +86,7 @@ const CreateLeague: React.FC<CreateLeagueProps> = ({ onSuccess }) => {
   e.preventDefault();
   setIsSubmitting(true);
 
-  const payload = {
+  const league_payload = {
     league_name: formData.leagueSettings.name,
     location: formData.leagueSettings.location,
     season: formData.leagueSettings.season,
@@ -108,12 +108,35 @@ const CreateLeague: React.FC<CreateLeagueProps> = ({ onSuccess }) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(league_payload)
     });
 
     if (response.ok) {
-      onSuccess(); // Optional: show UI feedback
-      router.push("/Dashboard");
+      const json = await response.json();
+      const league_id = json.id; 
+      localStorage.setItem("league_id", league_id.toString());
+      
+      const team_payload = formData.teams.map((team) => ({
+        team_name: team.name,
+        contact_person: team.contactName,
+        contact_email: team.contactEmail,
+        league_id: league_id 
+      }));
+
+      const teamRes = await fetch('http://localhost:5000/team', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ teams: team_payload })
+      });
+      console.log("Team response:", teamRes.status);
+      if (teamRes.ok) {
+  
+        router.push("/Dashboard");
+      } else {
+        alert("League created but failed to add teams.");
+      }
     } else {
       alert("Failed to create league.");
     }
@@ -124,8 +147,6 @@ const CreateLeague: React.FC<CreateLeagueProps> = ({ onSuccess }) => {
     setIsSubmitting(false);
   }
 };
-
-
   
 
   const updateLeagueSettings = (settings: typeof formData.leagueSettings) => {

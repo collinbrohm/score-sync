@@ -7,7 +7,20 @@ import Navbar from "../components/Navbar/Navbar";
 import Image from "next/image";
 import styles from "./Dashboard.module.css";
 
-// Helper functions
+// Types
+interface Team {
+  id: number;
+  name: string;
+  sport: string;
+}
+
+interface Player {
+  name: string;
+  description: string;
+  image: string | null;
+}
+
+// Helpers
 const getSportImage = (sport: string) => {
   switch (sport.toLowerCase()) {
     case "football":
@@ -26,7 +39,7 @@ const getSportImage = (sport: string) => {
 };
 
 const getPlayerImage = (image: string | null) => {
-  return image ? image : "/defaultProfile.svg";
+  return image || "/defaultProfile.svg";
 };
 
 export default function Dashboard() {
@@ -34,31 +47,23 @@ export default function Dashboard() {
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [username, setUsername] = useState("Loading...");
-  const [teams, setTeams] = useState([]);
-  const [players, setPlayers] = useState([]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleToggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
-
-  const handleCreateLeague = () => {
-    router.push("/CreateLeague");
-  };
-
-  const handleTeamClick = (teamId: number) => {
-    router.push(`/TeamStats/${teamId}`);
-  };
+  const handleToggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  const handleCreateLeague = () => router.push("/CreateLeague");
+  const handleTeamClick = () => router.push("/TeamStats");
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/dashboard"); // Assuming Flask backend
+        const response = await fetch("http://localhost:5000/api/dashboard");
         const data = await response.json();
 
         setUsername(data.username);
-        setTeams(data.teams);
-        setPlayers(data.players);
+        setTeams(data.teams || []);
+        setPlayers(data.players || []);
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
       } finally {
@@ -81,11 +86,7 @@ export default function Dashboard() {
     <div className={styles.dashboardContainer}>
       <Sidebar isOpen={isSidebarOpen} onToggleSidebar={handleToggleSidebar} />
 
-      <div
-        className={`${styles.mainContent} ${
-          isSidebarOpen ? styles.mainContentShift : ""
-        }`}
-      >
+      <div className={`${styles.mainContent} ${isSidebarOpen ? styles.mainContentShift : ""}`}>
         <Navbar />
 
         {/* Banner */}
@@ -105,18 +106,9 @@ export default function Dashboard() {
         </div>
 
         <div className={styles.scrollContainer}>
-          {teams.map((team: any, index: number) => (
-            <div
-              key={index}
-              className={styles.teamCard}
-              onClick={() => handleTeamClick(team.id)} // Assume team has an `id` field
-            >
-              <Image
-                src={getSportImage(team.sport)}
-                alt={team.sport}
-                width={44}
-                height={44}
-              />
+          {teams.map((team) => (
+            <div key={team.id} className={styles.teamCard} onClick={handleTeamClick}>
+              <Image src={getSportImage(team.sport)} alt={team.sport} width={44} height={44} />
               <div className={styles.teamName}>{team.name}</div>
               <div className={styles.sportName}>{team.sport}</div>
             </div>
@@ -126,7 +118,7 @@ export default function Dashboard() {
         {/* Players */}
         <h2 className={styles.sectionTitle}>Players</h2>
         <div className={styles.scrollContainer}>
-          {players.map((player: any, index: number) => (
+          {players.map((player, index) => (
             <div key={index} className={styles.playerCard}>
               <Image
                 src={getPlayerImage(player.image)}
